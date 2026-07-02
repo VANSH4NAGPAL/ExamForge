@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Exam {
+  id          Int         @id @default(autoincrement())
+  name        String
+  slug        String      @unique
+  description String      @default("")
+  questions   Question[]
+  progress    Progress[]
+  analytics   Analytics[]
+  reports     Report[]
+  createdAt   DateTime    @default(now())
+}
+
+model User {
+  id        String      @id @default(uuid())
+  deviceId  String      @unique
+  progress  Progress[]
+  analytics Analytics[]
+  reports   Report[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model Question {
+  id            Int         @id @default(autoincrement())
+  examId        Int
+  exam          Exam        @relation(fields: [examId], references: [id])
+  qNumber       String
+  section       String
+  questionText  String
+  optionA       String?
+  optionB       String?
+  optionC       String?
+  optionD       String?
+  optionE       String?
+  optionF       String?
+  correctAnswer String
+  explanation   String
+  analytics     Analytics[]
+}
+
+model Progress {
+  id              String   @id @default(uuid())
+  userId          String
+  examId          Int
+  user            User     @relation(fields: [userId], references: [id])
+  exam            Exam     @relation(fields: [examId], references: [id])
+  currentSection  String   @default("")
+  currentQuestion Int      @default(1)
+  updatedAt       DateTime @updatedAt
+
+  @@unique([userId, examId])
+}
+
+model Analytics {
+  id         String   @id @default(uuid())
+  userId     String
+  examId     Int
+  user       User     @relation(fields: [userId], references: [id])
+  exam       Exam     @relation(fields: [examId], references: [id])
+  questionId Int
+  question   Question @relation(fields: [questionId], references: [id])
+  isCorrect  Boolean
+  selected   String
+  answeredAt DateTime @default(now())
+}
+
+model Report {
+  id             String   @id @default(uuid())
+  examId         Int
+  exam           Exam     @relation(fields: [examId], references: [id])
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  mode           String   // e.g. "Test - Full", "Practice"
+  score          Float
+  totalQuestions Int
+  correctAnswers Int
+  timeSpent      Int      // in seconds
+  details        String   // JSON string of section breakdowns and wrong answers
+  createdAt      DateTime @default(now())
+}
