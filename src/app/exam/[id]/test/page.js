@@ -89,7 +89,7 @@ export default function TestPage() {
       answeredCount: Object.keys(answers).length,
       totalCount: questions.length
     }));
-  }, [answers, timeLeft, examId, mode, submitted]);
+  }, [answers, timeLeft, examId, mode, submitted, qIndex, questions, selectedSection]);
 
   const startTest = (testMode, section = null) => {
     let qs = [];
@@ -375,7 +375,7 @@ export default function TestPage() {
       <div className="min-h-screen bg-bg p-10">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-3xl font-extrabold text-fg mb-2">Test Complete</h1>
-          <p className="text-muted-fg text-sm mb-8">Here's your performance breakdown.</p>
+          <p className="text-muted-fg text-sm mb-8">Here&apos;s your performance breakdown.</p>
 
           {/* Score Card */}
           <div className={`card mb-6 border-2 ${passed ? 'border-[#22C55E]' : 'border-[#EF4444]'}`}>

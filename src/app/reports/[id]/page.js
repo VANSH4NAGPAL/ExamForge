@@ -127,7 +127,7 @@ export default function ReportPage() {
           <div className="card mb-6 border-accent bg-accent/5">
             <h2 className="text-xs font-bold uppercase tracking-widest text-accent mb-2">Targeted Study Plan</h2>
             <p className="text-fg text-lg">
-              You lost the most points ({focusArea.count} errors) in <strong className="font-bold">"{focusArea.name}"</strong>.
+              You lost the most points ({focusArea.count} errors) in <strong className="font-bold">&quot;{focusArea.name}&quot;</strong>.
             </p>
             <p className="text-muted-fg text-sm mt-1">Focus your next practice session heavily on this section to maximize your score increase.</p>
           </div>

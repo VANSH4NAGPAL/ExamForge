@@ -379,14 +379,14 @@ export default function PracticePage() {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-fg font-extrabold text-2xl">Session Analysis</h2>
-                <p className="text-muted-fg text-sm mt-1">Here's how you performed before leaving</p>
+                <p className="text-muted-fg text-sm mt-1">Here&apos;s how you performed before leaving</p>
               </div>
               <button onClick={() => setLeaveStep('hidden')} className="btn-ghost text-xs py-2 px-3">× Keep Studying</button>
             </div>
 
             {!analysis ? (
                <div className="card mb-5 border-border text-center py-10">
-                  <p className="text-muted-fg">You haven't answered any questions yet.</p>
+                  <p className="text-muted-fg">You haven&apos;t answered any questions yet.</p>
                </div>
             ) : (
               <>
