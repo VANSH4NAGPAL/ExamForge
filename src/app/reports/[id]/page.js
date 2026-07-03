@@ -172,7 +172,9 @@ export default function ReportPage() {
                   ].filter(o => o.text)).map((opt, j) => {
                     const displayLetter = optionLetters[j];
                     const isC = r.correctLetters.includes(opt.letter);
-                    const isSelected = r.selectedOriginal === opt.letter;
+                    const isSelected = Array.isArray(r.selectedOriginal) 
+                      ? r.selectedOriginal.includes(opt.letter) 
+                      : r.selectedOriginal === opt.letter;
                     return (
                       <div key={j} className={`option-tile answered mb-2 ${isC ? 'correct' : isSelected ? 'wrong' : 'dimmed'}`}>
                         <span className="option-letter">{displayLetter}</span>

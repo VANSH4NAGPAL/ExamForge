@@ -142,7 +142,22 @@ export default function TestPage() {
 
   const handleSelect = (qId, letter) => {
     if (submitted) return;
-    setAnswers(a => ({ ...a, [qId]: letter }));
+    const q = questions.find(q => q.id === qId);
+    if (!q) return;
+    const correctLetters = q.correctAnswer.split(',').map(l => l.trim());
+    const isMultiSelect = correctLetters.length > 1;
+
+    setAnswers(a => {
+      if (!isMultiSelect) return { ...a, [qId]: letter };
+      
+      const current = Array.isArray(a[qId]) ? a[qId] : (a[qId] ? [a[qId]] : []);
+      if (current.includes(letter)) {
+        const next = current.filter(l => l !== letter);
+        return { ...a, [qId]: next.length > 0 ? next : null };
+      } else {
+        return { ...a, [qId]: [...current, letter].sort() };
+      }
+    });
   };
 
   const handleSubmit = async () => {
@@ -156,8 +171,14 @@ export default function TestPage() {
     
     const computedResults = questions.map(q => {
       const selectedOriginal = answers[q.id];
-      const correctLetters = q.correctAnswer.split(',').map(l => l.trim());
-      const isCorrect = selectedOriginal && correctLetters.includes(selectedOriginal);
+      const correctLetters = q.correctAnswer.split(',').map(l => l.trim()).sort();
+      
+      let isCorrect = false;
+      if (Array.isArray(selectedOriginal)) {
+        isCorrect = JSON.stringify(selectedOriginal) === JSON.stringify(correctLetters);
+      } else {
+        isCorrect = selectedOriginal === correctLetters[0] && correctLetters.length === 1;
+      }
       
       if (isCorrect) correctCount++;
       if (!bySection[q.section]) bySection[q.section] = { correct: 0, total: 0 };
@@ -421,7 +442,9 @@ export default function TestPage() {
                   {(r.shuffledOptions || []).map((opt, j) => {
                     const letter = optionLetters[j];
                     const isC = r.correctLetters.includes(opt.letter);
-                    const isSelected = r.selectedOriginal === opt.letter;
+                    const isSelected = Array.isArray(r.selectedOriginal) 
+                      ? r.selectedOriginal.includes(opt.letter) 
+                      : r.selectedOriginal === opt.letter;
                     return (
                       <div key={j} className={`option-tile answered mb-2 ${isC ? 'correct' : isSelected ? 'wrong' : 'dimmed'}`}>
                         <span className="option-letter">{letter}</span>
@@ -446,7 +469,8 @@ export default function TestPage() {
 
   // ── Active Test ──
   const q = questions[qIndex];
-  const opts = q ? [q.optionA, q.optionB, q.optionC, q.optionD, q.optionE, q.optionF].filter(Boolean) : [];
+  const requiredCorrect = q?.correctAnswer ? q.correctAnswer.split(',').map(l => l.trim()) : [];
+  const isMultiSelect = requiredCorrect.length > 1;
 
   return (
     <div className="min-h-screen bg-bg flex flex-col lg:flex-row">
@@ -541,19 +565,23 @@ export default function TestPage() {
 
           {/* Question */}
           <div className="mb-4">
-            <span className="badge badge-grey mb-4 inline-block">{q?.qNumber}</span>
-            <h2 className="text-fg text-xl font-semibold leading-relaxed">{q?.questionText}</h2>
+            <div className="flex gap-2 items-center flex-wrap mb-4">
+              <span className="badge badge-grey">{q?.qNumber}</span>
+              {isMultiSelect && <span className="badge badge-yellow">Choose {requiredCorrect.length}</span>}
+            </div>
+            <h2 className="text-fg text-xl font-semibold leading-relaxed mb-6">{q?.questionText}</h2>
             {/* Options */}
             <div className="flex flex-col gap-3">
               {(questions[qIndex]?.shuffledOptions || []).map((opt, i) => {
-                const displayLetter = optionLetters[i];
+                const qAns = answers[questions[qIndex].id];
+                const isSelected = Array.isArray(qAns) ? qAns.includes(opt.letter) : qAns === opt.letter;
                 return (
                   <div
                     key={i}
                     onClick={() => handleSelect(questions[qIndex].id, opt.letter)}
-                    className={`option-tile ${answers[questions[qIndex].id] === opt.letter ? 'selected bg-[#1A3A1A] border-[#22C55E]' : ''}`}
+                    className={`option-tile ${isSelected ? 'selected-pending' : ''}`}
                   >
-                    <span className="option-letter">{displayLetter}</span>
+                    <span className="option-letter">{optionLetters[i]}</span>
                     <span>{opt.text.replace(/^[A-F]\)\s*/, '')}</span>
                   </div>
                 );

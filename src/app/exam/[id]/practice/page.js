@@ -22,6 +22,7 @@ export default function PracticePage() {
   const [activeSection, setActiveSection] = useState(null);
   const [qIndex, setQIndex] = useState(0);
   const [answered, setAnswered] = useState(null);
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const [sessionScore, setSessionScore] = useState({ correct: 0, total: 0 });
   const [answerHistory, setAnswerHistory] = useState([]); 
   const [loading, setLoading] = useState(true);
@@ -113,6 +114,7 @@ export default function PracticePage() {
     setAnswerHistory([]);
     setSessionScore({ correct: 0, total: 0 });
     setAnswered(null);
+    setSelectedOptions([]);
   };
 
   const currentQuestions = activeSection ? (sections[activeSection] || []) : [];
@@ -121,9 +123,39 @@ export default function PracticePage() {
 
   const handleAnswer = (letter) => {
     if (answered) return;
-    const correctLetters = question.correctAnswer.split(',').map(l => l.trim());
-    const isCorrect = correctLetters.includes(letter);
-    setAnswered({ selected: letter, correctLetters, isCorrect });
+    const correctLetters = question.correctAnswer.split(',').map(l => l.trim()).sort();
+    const isMultiSelect = correctLetters.length > 1;
+
+    if (isMultiSelect) {
+      if (selectedOptions.includes(letter)) {
+        setSelectedOptions(selectedOptions.filter(l => l !== letter));
+      } else {
+        setSelectedOptions([...selectedOptions, letter].sort());
+      }
+    } else {
+      const isCorrect = correctLetters.includes(letter);
+      setAnswered({ selected: letter, correctLetters, isCorrect });
+      setSessionScore(s => ({ correct: s.correct + (isCorrect ? 1 : 0), total: s.total + 1 }));
+      setAnswerHistory(h => [...h, {
+        qNumber: question.qNumber,
+        questionText: question.questionText,
+        section: activeSection,
+        sectionShort: activeSection.split(':')[0].trim(),
+        isCorrect,
+        selectedOriginal: letter,
+        correctLetters,
+        shuffledOptions: question.shuffledOptions,
+        explanation: question.explanation,
+      }]);
+    }
+  };
+
+  const submitMultiAnswer = () => {
+    if (answered) return;
+    const correctLetters = question.correctAnswer.split(',').map(l => l.trim()).sort();
+    const isCorrect = JSON.stringify(selectedOptions) === JSON.stringify(correctLetters);
+    
+    setAnswered({ selected: selectedOptions, correctLetters, isCorrect });
     setSessionScore(s => ({ correct: s.correct + (isCorrect ? 1 : 0), total: s.total + 1 }));
     setAnswerHistory(h => [...h, {
       qNumber: question.qNumber,
@@ -131,7 +163,7 @@ export default function PracticePage() {
       section: activeSection,
       sectionShort: activeSection.split(':')[0].trim(),
       isCorrect,
-      selectedOriginal: letter,
+      selectedOriginal: selectedOptions,
       correctLetters,
       shuffledOptions: question.shuffledOptions,
       explanation: question.explanation,
@@ -145,12 +177,14 @@ export default function PracticePage() {
       setQIndex(0);
     }
     setAnswered(null);
+    setSelectedOptions([]);
   };
 
   const switchSection = (sec) => {
     setActiveSection(sec);
     setQIndex(0);
     setAnswered(null);
+    setSelectedOptions([]);
   };
 
   const handleLeave = () => setLeaveStep('confirm');
@@ -211,11 +245,15 @@ export default function PracticePage() {
   };
 
   const getOptionStyle = (letter) => {
-    if (!answered) return 'option-tile';
+    if (!answered) {
+      return selectedOptions.includes(letter) ? 'option-tile selected-pending' : 'option-tile';
+    }
     const { selected, correctLetters } = answered;
     const isCorrect = correctLetters.includes(letter);
+    const isSelected = Array.isArray(selected) ? selected.includes(letter) : selected === letter;
+    
     if (isCorrect) return 'option-tile correct answered';
-    if (letter === selected && !isCorrect) return 'option-tile wrong answered';
+    if (isSelected && !isCorrect) return 'option-tile wrong answered';
     return 'option-tile dimmed answered';
   };
 
@@ -245,6 +283,8 @@ export default function PracticePage() {
 
   const optionLetters = ['A', 'B', 'C', 'D', 'E', 'F'];
   const options = question?.shuffledOptions || [];
+  const requiredCorrect = question?.correctAnswer ? question.correctAnswer.split(',').map(l => l.trim()) : [];
+  const isMultiSelect = requiredCorrect.length > 1;
 
   if (loading) {
     return (
@@ -560,7 +600,10 @@ export default function PracticePage() {
         <div className="flex-1 overflow-y-auto p-6 md:p-12 pb-32">
           <div className="max-w-3xl mx-auto">
             <div className="flex items-center justify-between mb-8">
-              <div className="badge badge-grey">Question {qIndex + 1} of {currentQuestions.length}</div>
+              <div className="flex gap-2 items-center flex-wrap">
+                <div className="badge badge-grey">Question {qIndex + 1} of {currentQuestions.length}</div>
+                {isMultiSelect && <div className="badge badge-yellow">Choose {requiredCorrect.length}</div>}
+              </div>
               {answered && (
                 <div className={`badge ${answered.isCorrect ? 'badge-green' : 'badge-red'}`}>
                   {answered.isCorrect ? 'Correct' : 'Incorrect'}
@@ -585,6 +628,18 @@ export default function PracticePage() {
                 </button>
               ))}
             </div>
+
+            {isMultiSelect && !answered && (
+              <div className="mt-6 flex justify-end">
+                <button 
+                  onClick={submitMultiAnswer} 
+                  disabled={selectedOptions.length !== requiredCorrect.length}
+                  className={`btn-primary ${selectedOptions.length !== requiredCorrect.length ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  Submit Answer
+                </button>
+              </div>
+            )}
 
             {answered && (
               <div className="mt-10 p-6 border-l-4 border-accent bg-accent/5">
