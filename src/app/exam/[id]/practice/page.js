@@ -168,14 +168,35 @@ export default function PracticePage() {
     }]);
   };
 
-  const handleNext = () => {
-    if (qIndex < currentQuestions.length - 1) {
-      setQIndex(q => q + 1);
+  // Restore answered state when navigating to a question that was already answered
+  const restoreAnsweredState = (targetQ) => {
+    if (!targetQ) return;
+    const hist = answerHistory.find(h => h.qNumber === targetQ.qNumber);
+    if (hist) {
+      setAnswered({
+        selected: hist.selectedOriginal,
+        correctLetters: hist.correctLetters,
+        isCorrect: hist.isCorrect,
+        isReview: true, // mark as review so we know it's read-only
+      });
     } else {
-      setQIndex(0);
+      setAnswered(null);
     }
-    setAnswered(null);
     setSelectedOptions([]);
+  };
+
+  const handleNext = () => {
+    const nextIdx = qIndex < currentQuestions.length - 1 ? qIndex + 1 : 0;
+    const nextQ = currentQuestions[nextIdx];
+    setQIndex(nextIdx);
+    restoreAnsweredState(nextQ);
+  };
+
+  const handlePrev = () => {
+    const prevIdx = Math.max(0, qIndex - 1);
+    const prevQ = currentQuestions[prevIdx];
+    setQIndex(prevIdx);
+    restoreAnsweredState(prevQ);
   };
 
   const switchSection = (sec) => {
@@ -565,7 +586,7 @@ export default function PracticePage() {
                     return (
                       <button
                         key={idx}
-                        onClick={() => { setQIndex(idx); setAnswered(null); setSelectedOptions([]); }}
+                        onClick={() => { setQIndex(idx); restoreAnsweredState(q); setSelectedOptions([]); }}
                         className={baseClass}
                       >
                         {idx + 1}
@@ -641,14 +662,22 @@ export default function PracticePage() {
 
             {answered && (
               <div className="mt-10 p-6 border-l-4 border-accent bg-accent/5">
+                {answered.isReview && (
+                  <div className="text-xs text-muted-fg mb-3 italic">You previously answered this question. Reviewing only.</div>
+                )}
                 <h3 className="text-accent font-bold text-sm uppercase tracking-widest mb-3">Explanation</h3>
                 <div className="text-muted-fg text-sm leading-relaxed whitespace-pre-line">
                   {question.explanation}
                 </div>
-                <div className="mt-6 flex justify-end">
-                  <button onClick={handleNext} className="btn-primary">
-                    {qIndex < currentQuestions.length - 1 ? 'Next Question →' : 'Back to start'}
-                  </button>
+                <div className="mt-6 flex gap-3 justify-end flex-wrap">
+                  {qIndex > 0 && (
+                    <button onClick={handlePrev} className="btn-ghost">← Previous</button>
+                  )}
+                  {qIndex < currentQuestions.length - 1 ? (
+                    <button onClick={handleNext} className="btn-primary">Next Question →</button>
+                  ) : (
+                    <button onClick={() => setLeaveStep('analysis')} className="btn-primary">Submit & Generate Report →</button>
+                  )}
                 </div>
               </div>
             )}
