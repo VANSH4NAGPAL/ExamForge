@@ -42,6 +42,7 @@ model Question {
   optionD       String?
   optionE       String?
   optionF       String?
+  optionG       String?
   correctAnswer String
   explanation   String
   analytics     Analytics[]

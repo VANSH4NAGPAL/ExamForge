@@ -45,13 +45,10 @@ export default function PracticePage() {
               { text: q.optionC, letter: 'C' },
               { text: q.optionD, letter: 'D' },
               { text: q.optionE, letter: 'E' },
-              { text: q.optionF, letter: 'F' }
+              { text: q.optionF, letter: 'F' },
+              { text: q.optionG, letter: 'G' }
             ].filter(o => o.text);
             
-            for (let i = opts.length - 1; i > 0; i--) {
-              const j = Math.floor(Math.random() * (i + 1));
-              [opts[i], opts[j]] = [opts[j], opts[i]];
-            }
             q.shuffledOptions = opts;
           });
         });
@@ -119,7 +116,8 @@ export default function PracticePage() {
 
   const currentQuestions = activeSection ? (sections[activeSection] || []) : [];
   const question = currentQuestions[qIndex];
-  const progress = currentQuestions.length > 0 ? ((qIndex + 1) / currentQuestions.length) * 100 : 0;
+  const answeredCount = answerHistory.filter(h => h.section === activeSection).length;
+  const progress = currentQuestions.length > 0 ? (answeredCount / currentQuestions.length) * 100 : 0;
 
   const handleAnswer = (letter) => {
     if (answered) return;
@@ -567,7 +565,7 @@ export default function PracticePage() {
                     return (
                       <button
                         key={idx}
-                        onClick={() => { setQIndex(idx); setAnswered(null); }}
+                        onClick={() => { setQIndex(idx); setAnswered(null); setSelectedOptions([]); }}
                         className={baseClass}
                       >
                         {idx + 1}
