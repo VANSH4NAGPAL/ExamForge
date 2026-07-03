@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { PrismaClient } from '@prisma/client';
 import ThemeToggle from '@/components/ThemeToggle';
-import { BookOpen, Timer, Plus, LayoutDashboard } from 'lucide-react';
+import DashboardTabs from '@/components/DashboardTabs';
 
 const prisma = new PrismaClient();
 
@@ -58,39 +58,8 @@ export default async function HomePage() {
           </div>
         </div>
 
-        <hr className="divider mb-10" />
-
-        {/* Exam Grid */}
-        <div>
-          <h2 className="text-xs font-bold uppercase tracking-widest text-muted-fg mb-5">Available Exams</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {exams.map(exam => (
-              <Link key={exam.id} href={`/exam/${exam.id}`} className="card group cursor-pointer block">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-10 h-10 rounded-none bg-muted border border-border flex items-center justify-center flex-shrink-0">
-                    <span className="text-accent font-black text-base">
-                      {exam.name.split(' ').map(w => w[0]).join('').slice(0,2)}
-                    </span>
-                  </div>
-                  <span className="badge badge-yellow">{exam._count.questions} Qs</span>
-                </div>
-                <h3 className="text-fg font-bold text-lg mb-1 group-hover:text-accent transition-colors">{exam.name}</h3>
-                <p className="text-muted-fg text-sm leading-relaxed">{exam.description} This bank includes {exam._count.questions} dynamic questions.</p>
-                <div className="mt-5 flex items-center gap-2">
-                  <span className="text-accent text-sm font-semibold">Start Practicing →</span>
-                </div>
-              </Link>
-            ))}
-
-            {/* Placeholder Card */}
-            <div className="card border-dashed opacity-40 flex flex-col items-center justify-center text-center py-10">
-              <div className="w-10 h-10 rounded-none bg-muted flex items-center justify-center mb-3">
-                <Plus className="text-muted-fg" size={20} strokeWidth={1.5} />
-              </div>
-              <p className="text-muted-fg text-sm font-medium">More exams coming soon</p>
-            </div>
-          </div>
-        </div>
+        {/* Content Grids via Client Component */}
+        <DashboardTabs exams={exams} />
       </div>
     </div>
   );
