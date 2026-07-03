@@ -49,17 +49,27 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
 
 /* ── Sidebar ── */
 .sidebar {
-  position: fixed;
-  top: 0; left: 0;
-  height: 100vh;
-  width: 260px;
+  position: static;
+  width: 100%;
+  height: auto;
   background: var(--bg);
-  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
   z-index: 50;
   padding: 0 0 24px 0;
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    width: 260px;
+    border-right: 1px solid var(--border);
+    border-bottom: none;
+    overflow-y: auto;
+  }
 }
 
 .sidebar-logo {

@@ -52,7 +52,7 @@ export default function ExamHubPage() {
   if (!exam) return <div className="p-10 text-fg">Exam not found.</div>;
 
   return (
-    <div className="min-h-screen bg-bg p-10">
+    <div className="min-h-screen bg-bg p-4 md:p-10">
       <div className="max-w-4xl mx-auto">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-muted-fg mb-8">

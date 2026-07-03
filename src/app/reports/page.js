@@ -35,7 +35,7 @@ export default function ReportsList() {
   }
 
   return (
-    <div className="min-h-screen bg-bg p-10">
+    <div className="min-h-screen bg-bg p-4 md:p-10">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-2 text-xs text-muted-fg mb-8">
           <Link href="/" className="hover:text-accent transition-colors">Dashboard</Link>
@@ -54,7 +54,7 @@ export default function ReportsList() {
             <Link href="/" className="btn-primary">Go to Dashboard</Link>
           </div>
         ) : (
-          <div className="grid gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {reports.map((r) => {
               const passed = r.score >= 70;
               return (

@@ -20,7 +20,7 @@ export default async function HomePage() {
   const exams = await getExams();
 
   return (
-    <div className="min-h-screen bg-bg p-10">
+    <div className="min-h-screen bg-bg p-4 md:p-10">
       {/* Header */}
       <div className="max-w-5xl mx-auto">
         <div className="mb-12">
@@ -43,7 +43,7 @@ export default async function HomePage() {
         </div>
 
         {/* Stats Row */}
-        <div className="grid grid-cols-3 gap-4 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
           <div className="stat-chip">
             <span className="value">{exams.length}</span>
             <span className="label">Available Exams</span>

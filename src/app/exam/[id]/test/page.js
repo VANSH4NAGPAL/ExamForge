@@ -449,7 +449,7 @@ export default function TestPage() {
   const opts = q ? [q.optionA, q.optionB, q.optionC, q.optionD, q.optionE, q.optionF].filter(Boolean) : [];
 
   return (
-    <div className="min-h-screen bg-bg flex">
+    <div className="min-h-screen bg-bg flex flex-col lg:flex-row">
       {/* Leave Modal */}
       {showLeaveModal && (
         <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
@@ -525,7 +525,7 @@ export default function TestPage() {
       </aside>
 
       {/* Main */}
-      <main className="ml-[260px] flex-1 p-10 flex flex-col">
+      <main className="lg:ml-[260px] flex-1 p-4 md:p-10 flex flex-col">
         <div className="max-w-3xl">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">

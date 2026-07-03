@@ -465,7 +465,7 @@ export default function PracticePage() {
   }
 
   return (
-    <div className="min-h-screen bg-bg flex">
+    <div className="min-h-screen bg-bg flex flex-col lg:flex-row">
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="sidebar-logo">
@@ -552,7 +552,7 @@ export default function PracticePage() {
       </aside>
 
       {/* Main Content */}
-      <main className="ml-[260px] flex-1 flex flex-col overflow-hidden relative min-h-screen">
+      <main className="lg:ml-[260px] flex-1 flex flex-col overflow-hidden relative min-h-screen">
         <div className="absolute top-0 left-0 w-full h-1 bg-muted">
           <div className="h-full bg-accent transition-all duration-300" style={{ width: `${progress}%` }}></div>
         </div>

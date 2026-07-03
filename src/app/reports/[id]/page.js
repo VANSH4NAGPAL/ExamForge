@@ -30,7 +30,7 @@ export default function ReportPage() {
   }
 
   if (!report) {
-    return <div className="min-h-screen bg-bg p-10 text-fg">Report not found.</div>;
+    return <div className="min-h-screen bg-bg p-4 md:p-10 text-fg">Report not found.</div>;
   }
 
   const details = JSON.parse(report.details);
@@ -76,7 +76,7 @@ export default function ReportPage() {
   });
 
   return (
-    <div className="min-h-screen bg-bg p-10">
+    <div className="min-h-screen bg-bg p-4 md:p-10">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center gap-2 text-xs text-muted-fg mb-8">
           <Link href="/" className="hover:text-accent transition-colors">Dashboard</Link>
@@ -90,7 +90,7 @@ export default function ReportPage() {
         <p className="text-muted-fg text-sm mb-8">{report.exam?.name} — {new Date(report.createdAt).toLocaleString()}</p>
 
         {/* Top Analytics Row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {/* Accuracy Card */}
           <div className={`card border-2 ${passed ? 'border-[#22C55E]' : 'border-[#EF4444]'}`}>
             <div className="text-muted-fg text-xs uppercase font-bold tracking-widest mb-1">Accuracy</div>
