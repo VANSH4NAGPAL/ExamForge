@@ -28,7 +28,7 @@ export default async function NotePage({ params }) {
   return (
     <div className="min-h-screen bg-bg">
       {/* Header Area */}
-      <div className="bg-[#111] border-b border-[#2A2A2A] sticky top-0 z-10 pt-4 md:pt-10 pb-6 px-4 md:px-10">
+      <div className="bg-card border-b border-border sticky top-0 z-10 pt-4 md:pt-10 pb-6 px-4 md:px-10">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-2 text-sm text-muted-fg mb-6 overflow-x-auto whitespace-nowrap pb-1 scrollbar-hide">
             <Link href="/" className="hover:text-accent transition-colors">Dashboard</Link>
@@ -50,10 +50,10 @@ export default async function NotePage({ params }) {
       {/* Content Area */}
       <div className="p-4 md:p-10">
         <div className="max-w-4xl mx-auto">
-          <article className="prose prose-invert prose-yellow max-w-none 
+          <article className="prose dark:prose-invert prose-yellow max-w-none 
             prose-headings:font-bold prose-headings:tracking-tight 
             prose-h1:text-3xl prose-h1:mb-6 prose-h1:text-fg
-            prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:text-fg prose-h2:border-b prose-h2:border-[#2A2A2A] prose-h2:pb-2
+            prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:text-fg prose-h2:border-b prose-h2:border-border prose-h2:pb-2
             prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-h3:text-fg
             prose-p:text-muted-fg prose-p:leading-relaxed prose-p:mb-5
             prose-a:text-accent prose-a:no-underline hover:prose-a:underline
@@ -61,13 +61,13 @@ export default async function NotePage({ params }) {
             prose-ul:text-muted-fg prose-ul:list-disc prose-ul:pl-5 prose-ul:mb-5 prose-li:mb-2
             prose-ol:text-muted-fg prose-ol:list-decimal prose-ol:pl-5 prose-ol:mb-5 prose-li:mb-2
             prose-blockquote:border-l-4 prose-blockquote:border-accent prose-blockquote:bg-accent/5 prose-blockquote:py-1 prose-blockquote:px-4 prose-blockquote:text-muted-fg prose-blockquote:italic prose-blockquote:my-6
-            prose-code:text-[#FFD500] prose-code:bg-[#2A2000] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
-            prose-pre:bg-[#111] prose-pre:border prose-pre:border-[#2A2A2A] prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto
+            prose-code:text-fg prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
+            prose-pre:bg-card prose-pre:border prose-pre:border-border prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto
             prose-table:w-full prose-table:text-left prose-table:border-collapse prose-table:mb-8
-            prose-th:bg-[#1A1A1A] prose-th:text-fg prose-th:p-3 prose-th:border prose-th:border-[#2A2A2A] prose-th:font-semibold
-            prose-td:p-3 prose-td:border prose-td:border-[#2A2A2A] prose-td:text-muted-fg
-            prose-img:rounded-lg prose-img:border prose-img:border-[#2A2A2A] prose-img:max-w-full prose-img:h-auto prose-img:my-6
-            prose-hr:border-[#2A2A2A] prose-hr:my-10
+            prose-th:bg-muted prose-th:text-fg prose-th:p-3 prose-th:border prose-th:border-border prose-th:font-semibold
+            prose-td:p-3 prose-td:border prose-td:border-border prose-td:text-muted-fg
+            prose-img:rounded-lg prose-img:border prose-img:border-border prose-img:max-w-full prose-img:h-auto prose-img:my-6
+            prose-hr:border-border prose-hr:my-10
           ">
             <ReactMarkdown 
               remarkPlugins={[remarkGfm]}
@@ -107,7 +107,7 @@ export default async function NotePage({ params }) {
                 },
                 img: ({node, ...props}) => (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img className="rounded-lg border border-[#2A2A2A] max-w-full shadow-lg my-8" loading="lazy" {...props} alt={props.alt || 'Note illustration'} />
+                  <img className="rounded-lg border border-border max-w-full shadow-lg my-8" loading="lazy" {...props} alt={props.alt || 'Note illustration'} />
                 ),
                 h1: ({node, ...props}) => null, // Hide h1 since we render it in the header
               }}
@@ -116,7 +116,7 @@ export default async function NotePage({ params }) {
             </ReactMarkdown>
           </article>
 
-          <div className="mt-16 pt-8 border-t border-[#2A2A2A] flex justify-between items-center flex-wrap gap-4">
+          <div className="mt-16 pt-8 border-t border-border flex justify-between items-center flex-wrap gap-4">
             <Link href="/notes/csa" className="btn-ghost flex items-center gap-2">
               <Icons.ArrowLeft size={16} /> Back to all Notes
             </Link>

@@ -33,13 +33,13 @@ export default async function NotesIndexPage() {
               return (
                 <Link key={note.id} href={`/notes/csa/${note.slug}`} className="card group cursor-pointer block hover:border-accent transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(255,213,0,0.2)]">
                   <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 rounded-lg bg-[#1A1A1A] border border-[#2A2A2A] flex items-center justify-center flex-shrink-0 group-hover:bg-[#2A2A00] group-hover:border-[#FFD500]/50 transition-colors">
+                    <div className="w-12 h-12 rounded-lg bg-card border border-border flex items-center justify-center flex-shrink-0 group-hover:bg-accent/10 group-hover:border-accent/50 transition-colors">
                       <Icon size={24} className="text-muted-fg group-hover:text-accent transition-colors" />
                     </div>
                     <span className="text-xs font-mono text-muted-fg opacity-50">{String(idx + 1).padStart(2, '0')}</span>
                   </div>
                   <h3 className="text-fg font-bold text-lg mb-2 group-hover:text-accent transition-colors line-clamp-2">{note.title}</h3>
-                  <div className="mt-4 pt-4 border-t border-[#2A2A2A] flex items-center gap-2">
+                  <div className="mt-4 pt-4 border-t border-border flex items-center gap-2">
                     <span className="text-accent text-sm font-semibold">Read Notes →</span>
                   </div>
                 </Link>
