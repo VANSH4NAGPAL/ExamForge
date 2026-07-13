@@ -90,7 +90,7 @@ export default function DashboardTabs({ exams }) {
               </div>
               <span className="badge badge-grey">CAD</span>
             </div>
-            <h3 className="text-fg font-bold text-lg mb-2 group-hover:text-accent transition-colors">CAD ServiceNow Notes</h3>
+            <h3 className="text-fg font-bold text-lg mb-2 group-hover:text-accent transition-colors">Scripting in ServiceNow Fundamentals On Demand</h3>
             <p className="text-muted-fg text-sm leading-relaxed mb-5">These notes are made from the transcript of the videos on ServiceNow courses.</p>
             <div className="mt-5 pt-4 border-t border-[#2A2A2A] flex items-center gap-2">
               <span className="text-accent text-sm font-semibold">Read Notes →</span>
