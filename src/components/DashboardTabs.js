@@ -82,6 +82,20 @@ export default function DashboardTabs({ exams }) {
               <span className="text-accent text-sm font-semibold">Read Notes →</span>
             </div>
           </Link>
+          
+          <Link href="/notes/cad" className="card group cursor-pointer block hover:border-accent transition-all duration-300">
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-12 h-12 rounded-lg bg-muted border border-border flex items-center justify-center flex-shrink-0 group-hover:bg-accent/10 group-hover:border-accent/30 transition-colors">
+                <BookOpen className="text-accent" size={24} />
+              </div>
+              <span className="badge badge-grey">CAD</span>
+            </div>
+            <h3 className="text-fg font-bold text-lg mb-2 group-hover:text-accent transition-colors">CAD ServiceNow Notes</h3>
+            <p className="text-muted-fg text-sm leading-relaxed mb-5">These notes are made from the transcript of the videos on ServiceNow courses.</p>
+            <div className="mt-5 pt-4 border-t border-[#2A2A2A] flex items-center gap-2">
+              <span className="text-accent text-sm font-semibold">Read Notes →</span>
+            </div>
+          </Link>
         </div>
       )}
     </div>

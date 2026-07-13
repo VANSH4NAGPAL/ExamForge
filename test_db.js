@@ -1,0 +1,1 @@
+const { PrismaClient } = require('@prisma/client'); const prisma = new PrismaClient(); async function main() { const qs = await prisma.question.findMany({ where: { questionText: { contains: 'restrict Knowledge Bases' } } }); console.log(JSON.stringify(qs, null, 2)); } main().catch(console.error).finally(() => prisma.$disconnect());

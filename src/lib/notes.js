@@ -2,10 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
-const notesDirectory = path.join(process.cwd(), 'content/notes/csa');
-
-// Human-readable titles for the 16 CSA modules based on filenames
+// Human-readable titles for the modules based on filenames
 const topicTitles = {
+  // CSA
   'form_configuration_notes': 'Form Configuration',
   'advanced_configuration_notes': 'Advanced Configuration',
   'module4_table_administration_notes': 'Table Administration',
@@ -21,11 +20,21 @@ const topicTitles = {
   'module7_scripting_utilities_notes': 'Scripting Utilities',
   'migration_update_sets_notes': 'Migration & Update Sets',
   'module8_security_notes': 'Securing Instance',
-  'security_center_notes': 'Security Center'
+  'security_center_notes': 'Security Center',
+  // CAD
+  'scripting_overview_notes': 'SSNF - Scripting Overview',
+  'client_scripts_notes': 'SSNF - Client Scripts',
+  'ui_policies_notes': 'SSNF - UI Policies',
+  'business_rules_notes': 'SSNF - Business Rules',
+  'glide_system_notes': 'SSNF - GlideSystem',
+  'glide_record_notes': 'SSNF - GlideRecord',
+  'script_includes_notes': 'SSNF - Script Includes',
+  'flow_designer_scripting_notes': 'SSNF - Flow Designer Scripting'
 };
 
 // Nice icons for each topic
 const topicIcons = {
+  // CSA
   'form_configuration_notes': 'LayoutTemplate',
   'advanced_configuration_notes': 'Settings',
   'module4_table_administration_notes': 'Database',
@@ -41,10 +50,31 @@ const topicIcons = {
   'module7_scripting_utilities_notes': 'Code',
   'migration_update_sets_notes': 'PackageOpen',
   'module8_security_notes': 'Lock',
-  'security_center_notes': 'Shield'
+  'security_center_notes': 'Shield',
+  // CAD
+  'scripting_overview_notes': 'BookOpen',
+  'client_scripts_notes': 'Terminal',
+  'ui_policies_notes': 'Shield',
+  'business_rules_notes': 'Server',
+  'glide_system_notes': 'Cpu',
+  'glide_record_notes': 'Database',
+  'script_includes_notes': 'Code',
+  'flow_designer_scripting_notes': 'GitMerge'
 };
 
-export function getAllNotes() {
+const cadOrder = [
+  'scripting_overview_notes',
+  'client_scripts_notes',
+  'ui_policies_notes',
+  'business_rules_notes',
+  'glide_system_notes',
+  'glide_record_notes',
+  'script_includes_notes',
+  'flow_designer_scripting_notes'
+];
+
+export function getAllNotes(type = 'csa') {
+  const notesDirectory = path.join(process.cwd(), `content/notes/${type}`);
   if (!fs.existsSync(notesDirectory)) return [];
   
   const fileNames = fs.readdirSync(notesDirectory);
@@ -68,6 +98,13 @@ export function getAllNotes() {
 
   // Sort them loosely by how they appear in the course (module numbers if present)
   return allNotesData.sort((a, b) => {
+    if (type === 'cad') {
+      const aIndex = cadOrder.indexOf(a.id);
+      const bIndex = cadOrder.indexOf(b.id);
+      if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+      if (aIndex !== -1) return -1;
+      if (bIndex !== -1) return 1;
+    }
     const aMod = a.id.match(/module(\d+)/);
     const bMod = b.id.match(/module(\d+)/);
     if (aMod && bMod) return parseInt(aMod[1]) - parseInt(bMod[1]);
@@ -77,7 +114,8 @@ export function getAllNotes() {
   });
 }
 
-export function getNoteData(id) {
+export function getNoteData(id, type = 'csa') {
+  const notesDirectory = path.join(process.cwd(), `content/notes/${type}`);
   const fullPath = path.join(notesDirectory, `${id}.md`);
   if (!fs.existsSync(fullPath)) return null;
   
