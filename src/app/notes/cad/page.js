@@ -14,11 +14,11 @@ export default async function NotesIndexPage() {
         <div className="flex items-center gap-2 text-sm text-muted-fg mb-8">
           <Link href="/" className="hover:text-accent transition-colors">Dashboard</Link>
           <span>/</span>
-          <span className="text-muted-fg">CAD ServiceNow Notes</span>
+          <span className="text-muted-fg">Scripting in ServiceNow Fundamentals On Demand</span>
         </div>
 
         <div className="mb-10">
-          <h1 className="text-4xl font-extrabold text-fg tracking-tight mb-3">ServiceNow CAD Study Notes</h1>
+          <h1 className="text-4xl font-extrabold text-fg tracking-tight mb-3">Scripting in ServiceNow Fundamentals On Demand</h1>
           <p className="text-muted-fg text-base">These notes are made from the transcript of the videos on ServiceNow courses.</p>
         </div>
 
