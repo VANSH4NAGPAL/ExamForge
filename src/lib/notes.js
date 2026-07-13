@@ -90,9 +90,9 @@ export function getAllNotes(type = 'csa') {
       return {
         id,
         slug: id,
-        title: topicTitles[id] || id.replace(/_/g, ' '),
-        icon: topicIcons[id] || 'BookOpen',
-        ...matterResult.data
+        ...matterResult.data,
+        title: topicTitles[id] || matterResult.data.title || id.replace(/_/g, ' '),
+        icon: topicIcons[id] || matterResult.data.icon || 'BookOpen'
       };
     });
 
@@ -138,9 +138,9 @@ export function getNoteData(id, type = 'csa') {
   return {
     id,
     slug: id,
-    title: topicTitles[id] || id.replace(/_/g, ' '),
-    icon: topicIcons[id] || 'BookOpen',
     content: matterResult.content,
-    ...matterResult.data
+    ...matterResult.data,
+    title: topicTitles[id] || matterResult.data.title || id.replace(/_/g, ' '),
+    icon: topicIcons[id] || matterResult.data.icon || 'BookOpen'
   };
 }
